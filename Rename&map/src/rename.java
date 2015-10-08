@@ -7,11 +7,14 @@ import java.nio.file.attribute.FileTime;
 
 public class rename {
 	
-	
-	public  void  getCreationDate() throws IOException { 
+	public static void main(String[] arg) throws IOException
+	{
+		System.out.println(getCreationDate("")); // this is for testing only
+	}
+	public static  String  getCreationDate(String location) throws IOException { 
 // This code is to get the creation date of a file
 			
-			Path path = Paths.get("");
+			Path path = Paths.get(location);
 		    
 			BasicFileAttributes attr;
 		    
@@ -27,11 +30,12 @@ public class rename {
 		    
 		    String creationdate = getridofT.substring(0, k);
 		    
-		    System.out.println("Creation date: " + creationdate);
-
+		    return (creationdate);
 		    } catch (IOException e) {
 		    
 		    	System.out.println("oops un error! " + e.getMessage());
 		    }
+			return null;
+
 		  }
 }
