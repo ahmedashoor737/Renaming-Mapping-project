@@ -33,11 +33,21 @@ public class Paper {
 	}
 
 	/**
-	 * Find references of paper in PDF file and stores them as Papers in references.
+	 * Find references of paper in PDF file then finds or creates Paper objects.
+	 * Adds Paper objects to list of references and adds this Paper to list of referencing papers of that object.
 	 *
 	 * @return false if paper doesn't have a file or has already been populated, true otherwise
 	 */
 	public boolean populateReferences() {
+
+	}
+
+	/**
+	 * Adds a Paper that references this Paper to its list of referencingPapers.
+	 *
+	 * @param referencingPaper a paper that references this paper
+	 */
+	private void addReferencingPaper(Paper referencingPaper) {
 
 	}
 
