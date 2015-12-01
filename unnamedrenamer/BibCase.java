@@ -10,6 +10,7 @@ public class BibCase {
 	private static List<Paper> referencedNonExistingPapers;
 
 	public static void main(String[] args) {
+		test();
 		//entry point
 
 		//configuration (settings)
@@ -17,6 +18,10 @@ public class BibCase {
 		//populateReferences of existingPapers
 		//generate reference visualization
 		//keep monitering folder (add->rename, remove->handle)
+	}
+
+	public static void test() {
+		BibTexFinder.findBibItemByTitle("Title", new Paper(""));
 	}
 
 	/**
