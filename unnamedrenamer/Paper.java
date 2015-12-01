@@ -7,7 +7,7 @@ public class Paper {
 	private String title;
 	private String year;
 	private String fileName;
-	private String originalFileName;
+	private final String originalFileName;
 	private BibItem bibItem;
 	private List<Paper> references;
 	private List<Paper> referencingPapers;

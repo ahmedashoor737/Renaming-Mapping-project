@@ -4,9 +4,9 @@ public class BibItem {
 private Paper paper ;
 private String entryType;
 private String bibKey; 
-private String originalBibKey;
+private final String originalBibKey;
 private Map<String, String> bibFields;
-private String originalEntry;
+private final String originalEntry;
 /**
  * an empty constructor
  */
