@@ -10,14 +10,14 @@ public class Settings
 	Path undeditedBibFilePath ;
 	String defaultRenamingFormat  ; 
 	String renamingformat ; 
-	String ignoredFiles ; // Collcetion ???
+	String ignoredFiles ; 
 	boolean generateBibKey ;
 	String bibKeyGenerationFormat ; 
 	String visualizationBibFields ;
 	
 	
 	
-	// set and get methodes :  
+	// set and get methods :  
 	public Path getFolderPath()
 	{
 		return folderPath;
@@ -58,7 +58,7 @@ public class Settings
 		this.defaultRenamingFormat = defaultRenamingFormat;
 	}
 	*/
-	public List<String> getRenamingFormat() // List <String> ?? 
+	public List<String> getRenamingFormat()
 	{
 		return null;
 		
@@ -70,14 +70,14 @@ public class Settings
 		
 	}
 	
-	public void resetRenamingFormat  ()  // Parameter ? 
+	public void resetRenamingFormat  ()   
 	{
 		
 	}
 	
-	public String getIgnoredFiles()  //String Collection ??
+	public List<String> getIgnoredFiles()  
 	{
-		return ignoredFiles;
+		return null ;
 	}
 	
 	public void addIgnoredFiles(String ignoredFiles)
@@ -85,7 +85,7 @@ public class Settings
 		
 	}
 	
-	public boolean removeIgnoredFile() //Parameter 
+	public boolean removeIgnoredFile(String ignoredFiles )  
 	{
 		return false ;
 	}
@@ -100,7 +100,7 @@ public class Settings
 		this.generateBibKey = generateBibKey;
 	}
 	
-	public List<String> getBibKeyGenerationFormat() //List <String> ?? 
+	public List<String> getBibKeyGenerationFormat() 
 	{
 		return null ;
 	}
@@ -110,9 +110,9 @@ public class Settings
 		this.bibKeyGenerationFormat = bibKeyGenerationFormat;
 	}
 	
-	public String getVisualizationBibFields() // List <String> ?? 
+	public List<String> getVisualizationBibFields() 
 	{
-		return visualizationBibFields;
+		return null ;
 	}
 	
 	public boolean setVisualizationBibFields(String visualizationBibFields) 
