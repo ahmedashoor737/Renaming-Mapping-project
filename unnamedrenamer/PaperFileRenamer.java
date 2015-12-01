@@ -22,7 +22,7 @@ public class PaperFileRenamer {
 	 * @return a list of Paper objects of renamed files
 	 */
 	public List<Paper> batchRenaming(Path papersFolder) {
-
+		return null;
 	}
 
 	/**
@@ -32,7 +32,7 @@ public class PaperFileRenamer {
 	 * @return an object of the renamed paper, null if renaming failed
 	 */
 	public static Paper renameFile(String fileName) {
-
+		return null;
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class PaperFileRenamer {
 	 * @return A list Paper objects or renamed files
 	 */
 	public static List<Paper> handleOverlookedPapers() {
-
+		return null;
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class PaperFileRenamer {
 	 * @return A Paper object of the renamed file, null if it wasn't renamed
 	 */
 	private static Paper manuallyRenameFile(String fileName) {
-
+		return null;
 	}
 
 }

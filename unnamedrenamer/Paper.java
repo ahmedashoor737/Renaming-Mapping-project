@@ -7,7 +7,7 @@ public class Paper {
 	private String title;
 	private String year;
 	private String fileName;
-	private final String originalFileName;
+	private String originalFileName;
 	private BibItem bibItem;
 	private List<Paper> references;
 	private List<Paper> referencingPapers;
@@ -20,7 +20,7 @@ public class Paper {
 	 * @param title paper's title
 	 */
 	public Paper(String originalFileName, String title) {
-
+		
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class Paper {
 	 * @return false if paper doesn't have a file or has already been populated, true otherwise
 	 */
 	public boolean populateReferences() {
-
+		return true;
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class Paper {
 	 * @return whether references were populated
 	 */
 	private boolean referencesArePopulated() {
-		
+		return true;
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class Paper {
 	 * @return the new file name, or null if Paper has no file
 	 */
 	public String generateFileName() {
-
+		return "";
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class Paper {
 	 * @return creation date of file, or null if Paper has no file
 	 */
 	private String getCreationDate() {
-
+		return "";
 	}
 
 	/**
@@ -85,6 +85,6 @@ public class Paper {
 	 * @return whether Paper has file of not
 	 */
 	public boolean isExistingPaper() {
-
+		return true;
 	}
 }

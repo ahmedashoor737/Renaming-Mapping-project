@@ -32,6 +32,6 @@ public class ReferencesVisualizer {
 	 * @return true if the paper was found and removed, false otherwise
 	 */
 	public boolean removePaper(Paper paper) {
-
+		return true;
 	}
 }
