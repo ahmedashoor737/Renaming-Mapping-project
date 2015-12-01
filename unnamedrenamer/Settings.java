@@ -85,7 +85,7 @@ public class Settings
 		
 	}
 	
-	public boolean removeIgnoredFile(String ignoredFiles )  
+	public boolean removeIgnoredFile(String ignoredFile )  
 	{
 		return false ;
 	}
