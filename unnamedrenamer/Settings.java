@@ -7,7 +7,7 @@ public class Settings
 	//variables :
 	Path  folderPath ;
 	Path bibFilePath ;
-	Path undeditedBibFilePath ;
+	Path uneditedBibFilePath ;
 	String defaultRenamingFormat  ; 
 	String renamingformat ; 
 	String ignoredFiles ; 
@@ -38,12 +38,12 @@ public class Settings
 		return false ;
 	}
 	
-	public Path getUndeditedBibFilePath() 
+	public Path getUneditedBibFilePath() 
 	{
-		return undeditedBibFilePath;
+		return uneditedBibFilePath;
 	}
 	
-	public boolean setUndeditedBibFilePath(Path undeditedBibFilePath) 
+	public boolean setUneditedBibFilePath(Path uneditedBibFilePath) 
 	{
 		return false ;
 	}
