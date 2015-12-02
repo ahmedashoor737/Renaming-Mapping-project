@@ -7,6 +7,8 @@ import java.io.Reader;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import com.google.gson.*;
+import java.util.Map;
+import java.util.List;
 
 public class BibTexFinder {
 	private String bibItem;
@@ -29,7 +31,6 @@ public class BibTexFinder {
 	public static BibItem findBibItemByTitle(String title, Paper paper) {
 		//look in BibFile
 		//handle exceptions
-		//find bibitem
 		//create BibItem
 		//crossref [this is for demonstration purposes only and won't be used in actuality personally or commercially
 		//it demonstrates a personal paper manager that retrieves entries for the user's pdf papers as they are added to a certain folder]
@@ -40,8 +41,16 @@ public class BibTexFinder {
 		//java -cp ".;lib/*" BibCase
 
 		//proper handling, and if not found
+		String doi;
+		String bibEntry;
 		try {
-			String doi = getDOI(title);
+			doi = getDOI(title);
+			try {
+				bibEntry = getBibEntry(doi);
+				System.out.println(bibEntry);
+			} catch (ParseException pe) {
+				pe.printStackTrace();
+			}
 		} catch (MalformedURLException murle) {
 			murle.printStackTrace();
 		} catch (IOException ioe) {
@@ -49,8 +58,20 @@ public class BibTexFinder {
 		} catch (URISyntaxException urise) {
 			urise.printStackTrace();
 		}
+
 		
 		return null;
+	}
+
+	/**
+	 * this function is given a citation then returns a
+	 *  bibitem from internet
+	 *  @param citation citation from references
+	 *  @param paper paper to search for
+	 */
+	public static BibItem findBibItemByCitation(String citation, Paper paper) {
+		return null;
+		
 	}
 
 	/**
@@ -73,6 +94,27 @@ public class BibTexFinder {
 		doi = doi.substring(1, doi.length()-1);
 		
 		return doi;
+	}
+
+	/**
+	 * Looks for the bib entry on CrossRef using the DOI.
+	 *
+	 * @param doi the DOI of the publication. Can be found using getDOI(title)
+	 * @return a sting representation of the bib entry
+	 */
+	private static String getBibEntry(String doi) throws URISyntaxException, MalformedURLException, IOException, ParseException {
+		URL url = getCrossrefURL("/works/" + doi + "/transform/application/x-bibtex", null);
+		BufferedReader reader = getReader(url);
+
+		//load all reader content onto string
+		String line = reader.readLine();
+		String bibEntry = "";
+		while (line != null) {
+			bibEntry = bibEntry + "\n" + line;
+			line = reader.readLine();
+		}
+
+		return bibEntry;
 	}
 
 	/**
@@ -104,20 +146,7 @@ public class BibTexFinder {
 	 * @param url the url of the page
 	 * @return a reader that contains a stream of the page's content
 	 */
-	private static Reader getReader(URL url) throws IOException {
+	private static BufferedReader getReader(URL url) throws IOException {
 		return new BufferedReader(new InputStreamReader(url.openStream()));
 	}
-
-
-	/**
-	 * this function is given a citation then returns a
-	 *  bibitem from internet
-	 *  @param citation citation from references
-	 *  @param paper paper to search for
-	 */
-	public static BibItem findBibItemByCitation(String citation, Paper paper) {
-		return null;
-		
-	}
-
 }

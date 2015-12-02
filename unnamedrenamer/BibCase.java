@@ -21,7 +21,7 @@ public class BibCase {
 	}
 
 	public static void test() {
-		BibTexFinder.findBibItemByTitle("Title", new Paper(""));
+		BibTexFinder.findBibItemByTitle("2d and 3d visualizations of aspectj programs", new Paper(""));
 	}
 
 	/**
