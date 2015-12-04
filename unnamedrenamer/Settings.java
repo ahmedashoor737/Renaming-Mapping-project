@@ -5,117 +5,111 @@ public class Settings
 {
 	
 	//variables :
-	Path  folderPath ;
-	Path bibFilePath ;
-	Path uneditedBibFilePath ;
-	String defaultRenamingFormat  ; 
-	String renamingformat ; 
-	String ignoredFiles ; 
-	boolean generateBibKey ;
-	String bibKeyGenerationFormat ; 
-	String visualizationBibFields ;
+	private static Path  folderPath ;
+	private static Path bibFilePath ;
+	private static Path uneditedBibFilePath ;
+	private static String defaultRenamingFormat  ; 
+	private static String renamingformat ; 
+	private static String ignoredFiles ; 
+	private static boolean generateBibKey ;
+	private static String bibKeyGenerationFormat ; 
+	private static String visualizationBibFields ;
 	
-	
+	/**
+	 * No objects are created. Settings files are loaded and written to.
+	 */
+	private Settings() {
+	}
 	
 	// set and get methods :  
-	public Path getFolderPath()
+	public static Path getFolderPath()
 	{
 		return folderPath;
 	}
 	
-	public boolean setFolderPath(Path folderPath) 
+	public static boolean setFolderPath(Path folderPath) 
 	{
 		return false ; 
 	}
 	
-	public Path getBibFilePath() 
+	public static Path getBibFilePath() 
 	{
 		return bibFilePath;
 	}
 	
-	public boolean setBibFilePath(Path bibFilePath)
+	public static boolean setBibFilePath(Path bibFilePath)
 	{
 		return false ;
 	}
 	
-	public Path getUneditedBibFilePath() 
+	public static Path getUneditedBibFilePath() 
 	{
 		return uneditedBibFilePath;
 	}
 	
-	public boolean setUneditedBibFilePath(Path uneditedBibFilePath) 
+	public static boolean setUneditedBibFilePath(Path uneditedBibFilePath) 
 	{
 		return false ;
 	}
-	/*
-	public String getDefaultRenamingFormat() // List <Strind>
-	{
-		return defaultRenamingFormat;
-	}
 	
-	public void setDefaultRenamingFormat(String defaultRenamingFormat) 
-	{
-		this.defaultRenamingFormat = defaultRenamingFormat;
-	}
-	*/
-	public List<String> getRenamingFormat()
+	public static List<String> getRenamingFormat()
 	{
 		return null;
 		
 	}
 	
-	public boolean setRenamingFormat(String renamingformat) 
+	public static boolean setRenamingFormat(String renamingformat) 
 	{
 		return generateBibKey;
 		
 	}
 	
-	public void resetRenamingFormat  ()   
+	public static void resetRenamingFormat  ()   
 	{
 		
 	}
 	
-	public List<String> getIgnoredFiles()  
+	public static List<String> getIgnoredFiles()  
 	{
 		return null ;
 	}
 	
-	public void addIgnoredFiles(String ignoredFiles)
+	public static void addIgnoredFiles(String ignoredFiles)
 	{
 		
 	}
 	
-	public boolean removeIgnoredFile(String ignoredFile )  
+	public static boolean removeIgnoredFile(String ignoredFile )  
 	{
 		return false ;
 	}
 	
-	public boolean getGenerateBibKey() 
+	public static boolean getGenerateBibKey() 
 	{
 		return generateBibKey;
 	}
 	
-	public void setGenerateBibKey(boolean generateBibKey) 
+	public static void setGenerateBibKey(boolean generateBibKey) 
 	{
 		this.generateBibKey = generateBibKey;
 	}
 	
-	public List<String> getBibKeyGenerationFormat() 
+	public static List<String> getBibKeyGenerationFormat() 
 	{
 		return null ;
 	}
 	
-	public void setBibKeyGenerationFormat(String bibKeyGenerationFormat) 
+	public static void setBibKeyGenerationFormat(String bibKeyGenerationFormat) 
 	{
 		this.bibKeyGenerationFormat = bibKeyGenerationFormat;
 	}
 	
-	public List<String> getVisualizationBibFields() 
+	public static List<String> getVisualizationBibFields() 
 	{
 		return null ;
 	}
 	
-	public boolean setVisualizationBibFields(String visualizationBibFields) 
+	public static boolean setVisualizationBibFields(String visualizationBibFields) 
 	{
 		return false ;	
 	} 
@@ -123,4 +117,3 @@ public class Settings
 	
 		
 }
-
