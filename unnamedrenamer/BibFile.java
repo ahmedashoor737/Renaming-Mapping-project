@@ -10,6 +10,8 @@ import org.jbibtex.*;
 import java.util.List;
 
 /**
+ * Represents a .bib file and provides methods to handle entries in the file.
+ *
  * Use static methods for one-time operations on file. Create a BibFile for batch operations.
  * To use a BibFile object after passing the .bib file path: loadDatabaseFromFile(), perform operations, then writeDatabaseToFile()
  */
@@ -22,6 +24,11 @@ public class BibFile {
 		this.filePath = filePath;
 	}
 
+	/**
+	 * Reads the content of the file and puts it in a BibTeXDatabase
+	 *
+	 * The method can only be called once per instance and has no effect if called multiple times.
+	 */
 	public void loadDatabaseFromFile() throws IOException, ParseException {
 		if (!loadedDatabase) {
 			Reader reader = Files.newBufferedReader(filePath, StandardCharsets.UTF_8);
@@ -32,6 +39,9 @@ public class BibFile {
 		}
 	}
 
+	/**
+	 * Writes the BibTeXDatabase to the file.
+	 */
 	public void writeDatabaseToFile() throws IOException {
 		Writer writer = Files.newBufferedWriter(filePath, StandardCharsets.UTF_8);
 		BibTeXFormatter formatter = new BibTeXFormatter();
@@ -40,13 +50,19 @@ public class BibFile {
 	}
 
 	//find by other
+	/**
+	 * Looks for an entry in the database using the given title.
+	 *
+	 * @param title of the paper
+	 * @return null if not found, a matching BibTeXEntry otherwise
+	 */
 	public BibTeXEntry findBibItemByTitle(String title) {
 		List<BibTeXObject> objects = bibTexDatabase.getObjects();
 		
 		for (BibTeXObject object : objects) {
 			if (object instanceof BibTeXEntry) {
 				BibTeXEntry entry = (BibTeXEntry)object;
-				if (entry.getField(BibTeXEntry.KEY_TITLE).toUserString().equals(title)) {
+				if (entry.getField(BibTeXEntry.KEY_TITLE).toUserString().equalsIgnoreCase(title)) {
 					return entry;
 				}
 			}
@@ -56,10 +72,11 @@ public class BibFile {
 	}
 
 	/**
-	 * 
-	 * @param title title of paper
-	 * @param bibFilePath path to the bib file
-	 * @return bib item for this paper
+	 * Creates a BibFile, loadDatabaseFromFile(), then findBibItemByTitle(String).
+	 *
+	 * @param title of the paper
+	 * @param bibFilePath the .bib file to search in
+	 * @return null if not found, a matching BibTeXEntry otherwise
 	 */
 	public static BibTeXEntry findBibItemByTitle(String title, Path bibFilePath) {
 		BibTeXEntry entry = null;
@@ -77,14 +94,30 @@ public class BibFile {
 		return entry;
 	}
 
+	/**
+	 * Adds an entry to the database
+	 *
+	 * @param entry to be added
+	 */
 	public void addBibTeXEntry(BibTeXEntry entry) {
 		bibTexDatabase.addObject(entry);
 	}
 
+	/**
+	 * Transform the given String to BibTeXEntry and adds it to the database by addBibTeXEntry(BibTeXEntry)
+	 *
+	 * @param bibItemString representation of a BibTeX entry
+	 */
 	public void addBibTeXEntry(String bibItemString) throws ParseException {
 		addBibTeXEntry(BibItem.stringToBibTeXEntry(bibItemString));
 	}
 
+	/**
+	 * Creates a BibFile, loads its content, adds the entry, then write changes to file
+	 *
+	 * @entry to be added
+	 * @bibFilePath to be added to
+	 */
 	public static void addBibItem(BibTeXEntry entry, Path bibFilePath) throws IOException, ParseException {
 		BibFile bibFile = new BibFile(bibFilePath);
 		bibFile.loadDatabaseFromFile();
@@ -93,23 +126,16 @@ public class BibFile {
 	}
 
 	/**
-	 * 
-	 * @param bibItem bib item of paper
-	 * @param bibFilePath path to bib file
-	 * @return bib item 
+	 * Transform the given String to BibTeXEntry and adds it to the database by addBibItem(BibTeXEntry, Path)
+	 *
+	 * @param bibItemString representation of the entry to be added
+	 * @param bibFilePath to add to
 	 */
 	public static void addBibItem(String bibItemString, Path bibFilePath) throws IOException, ParseException {
 		BibFile.addBibItem(BibItem.stringToBibTeXEntry(bibItemString), bibFilePath);
 	}
 
-	//what parameter (BibItem, BibTexEntry, String of bibitem or a field/key)
-	//exchange (old, new)
-	public boolean removeBibItem() {
-		return false;
-	}
-
-	public static boolean removeBibItem(Path bibFilePath) {
-		//create, load, write
-		return false;
-	}
+	/**
+	 * Remove/Change
+	 */
 }

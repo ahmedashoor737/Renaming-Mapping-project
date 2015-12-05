@@ -9,6 +9,7 @@ import org.jbibtex.*;
  */
 public class BibCase {
 	//might change List since we need to search
+	//integrate API?
 	private static List<Paper> existingPapers;
 	private static List<Paper> referencedNonExistingPapers;
 
@@ -24,9 +25,21 @@ public class BibCase {
 	}
 
 	public static void test() {
+		boolean pathIsSet = Settings.setBibFilePath(Paths.get("samples", "mybib.bib"));
+		BibItem item = new BibItem(BibFile.findBibItemByTitle("A small paper", Settings.getBibFilePath()));
+		System.out.println(item.getValue(BibTeXEntry.KEY_AUTHOR));
+		System.out.println(item.getValue("AUTHOR"));
+		System.out.println(item.getValue("author"));
+		System.out.println("DOI: " + item.getValue("doi"));
+		System.out.println(item.getBibKey());
+		System.out.println(item.getType());
 
-		try {
-			boolean pathIsSet = Settings.setBibFilePath(Paths.get("samples", "mybib.bib"));
+
+		//getValue(key)
+		//getValue(string)
+		//getBibKey()
+
+		/*try {
 			if (pathIsSet) {
 				BibTexFinder finder = new BibTexFinder(Settings.getBibFilePath());
 				
@@ -44,7 +57,7 @@ public class BibCase {
 			ioe.printStackTrace();
 		} catch (ParseException pe) {
 			pe.printStackTrace();
-		}
+		}*/
 	}
 
 	/**

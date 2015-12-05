@@ -10,28 +10,32 @@ import java.io.InputStreamReader;
 import java.nio.file.Path;
 import com.google.gson.*;
 import org.jbibtex.*;
-import java.util.Map;
-import java.util.List;
 
 /**
- * Use static methods for one-time operations. Create a BibTexFinder for batch operations.
+ * This class finds a BibTeX entry in a BibFile or using CrossRef. The query can be the title or the citation (in which case it only searches CrossRef).
+ * If an entry was found online, the class adds it to the BibFile.
+ *
+ * Use static methods for one-time operations. Create a BibTexFinder for batch operations. The static methods use Settings.getBibFilePath() as the .bib file.
  * When using a BibTeXFinder object, create it, perform needed operations, then close it with close() to save new entries to the file.
  * To avoid data lost: Use one BibTeXFinder per file until you close it. Don't use static methods and an unclosed BibTeXFinder if they use the same file.
  */
 public class BibTexFinder {
-	//private String bibItem;
 	private BibFile bibFile;
 	private boolean doLookOnline;
 
-	public BibTexFinder() {
-		this.bibFile = null;
-		this.doLookOnline = true;
-	}
-
+	/**
+	 * Same as BibTexFinder(bibFilePath, true)
+	 */
 	public BibTexFinder(Path bibFilePath) throws IOException, ParseException {
 		this(bibFilePath, true);
 	}
 
+	/**
+	 * Creates a BibFile and calls loadDatabaseFromFile() on it
+	 *
+	 * @param bibFilePath for the .bib file acting as database
+	 * @param doLookOnline whether to look online or not
+	 */
 	public BibTexFinder(Path bibFilePath, boolean doLookOnline) throws IOException, ParseException {
 		this.bibFile = new BibFile(bibFilePath);
 		this.bibFile.loadDatabaseFromFile();
@@ -39,20 +43,22 @@ public class BibTexFinder {
 		this.doLookOnline = doLookOnline;
 	}
 
+	/**
+	 * Calls writeDatabaseToFile() on the BibFile
+	 */
 	public void close() throws IOException {
 		this.bibFile.writeDatabaseToFile();
 	}
 
 	//why does this and bibitem need paper?
-	//pass Paper?
+	//actually same as by citation excpet for local?
+	/**
+	 * Looks for the item in the BibFile and on CrossRef. Adds the item to BibFile if found on CrossRef.
+	 *
+	 * @param title of paper
+	 * @return BibItem containing the found entry, null if not found.
+	 */
 	public BibItem findBibItemByTitle(String title) {
-		//handle exceptions
-		//proper handling, and if not found
-		//integrate API (include license?)
-
-		//javac -cp ".;lib/*" BibTexFinder.java
-		//java -cp ".;lib/*" BibCase
-
 		BibTeXEntry entry = findInFile(title);
 
 		if (entry == null && doLookOnline) {
@@ -75,10 +81,11 @@ public class BibTexFinder {
 	}
 
 	/**
-	 * this function is given a title then returns a
-	 *  bibitem from internet
-	 *  @param title paper's title
-	 *  @param paper paper to search for
+	 * Creates an instance of BibTeXFinder with Settings.getBibFilePath() and doLookOnline = true.
+	 * Calls close() after searching.
+	 *
+	 * @param title of paper
+	 * @return BibItem containing the found entry, null if not found.
 	 */
 	public static BibItem findByTitle(String title) throws IOException, ParseException {
 		BibTexFinder finder = new BibTexFinder(Settings.getBibFilePath(), true);
@@ -88,6 +95,12 @@ public class BibTexFinder {
 		return bibItem;
 	}
 
+	/**
+	 * Searches on CrossRef using the given citation.
+	 *
+	 * @param citation with paper information
+	 * @return BibItem containing the found entry, null if not found.
+	 */
 	public BibItem findBibItemByCitation(String citation) {
 		if (doLookOnline) {
 			try {
@@ -110,12 +123,12 @@ public class BibTexFinder {
 	}
 
 	/**
-	 * this function is given a citation then returns a
-	 *  bibitem from internet
-	 *  @param citation citation from references
-	 *  @param paper paper to search for
+	 * Creates an instance of BibTeXFinder with Settings.getBibFilePath() and doLookOnline = true.
+	 * Calls close() after searching.
+	 *
+	 * @param citation with paper information
+	 * @return BibItem containing the found entry, null if not found.
 	 */
-	//actually same as by citation excpet for local?
 	public static BibItem findByCitation(String citation) throws IOException, ParseException{
 		BibTexFinder finder = new BibTexFinder(Settings.getBibFilePath(), true);
 		BibItem bibItem = finder.findBibItemByCitation(citation);
@@ -124,10 +137,22 @@ public class BibTexFinder {
 		return bibItem;
 	}
 
+	/**
+	 * Searches for entry in .bib file
+	 * 
+	 * @param title of paper
+	 * @return BibTeXEntry as it appears in the file database
+	 */
 	private BibTeXEntry findInFile(String title) {
 		return bibFile.findBibItemByTitle(title);
 	}
 
+	/**
+	 * Searches CrossRef using the given query. Finds the DOI then uses it to find the entry.
+	 *
+	 * @param query to search with
+	 * @return a string containing the entry as found on CrossRef, empty string if not found
+	 */
 	private String findOnCrossRef(String query) throws URISyntaxException, MalformedURLException, IOException {
 		String doi = getDOI(query);
 		return getBibEntry(doi);
