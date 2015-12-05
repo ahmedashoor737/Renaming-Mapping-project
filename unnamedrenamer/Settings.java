@@ -7,12 +7,9 @@ public class Settings
 	//variables :
 	private static Path  folderPath ;
 	private static Path bibFilePath ;
-	private static Path uneditedBibFilePath ;
 	private static String defaultRenamingFormat  ; 
 	private static String renamingformat ; 
 	private static String ignoredFiles ; 
-	private static boolean generateBibKey ;
-	private static String bibKeyGenerationFormat ; 
 	private static String visualizationBibFields ;
 	
 	/**
@@ -34,22 +31,17 @@ public class Settings
 	
 	public static Path getBibFilePath() 
 	{
-		return bibFilePath;
+		return Settings.bibFilePath;
 	}
 	
 	public static boolean setBibFilePath(Path bibFilePath)
 	{
-		return false ;
-	}
-	
-	public static Path getUneditedBibFilePath() 
-	{
-		return uneditedBibFilePath;
-	}
-	
-	public static boolean setUneditedBibFilePath(Path uneditedBibFilePath) 
-	{
-		return false ;
+		if (bibFilePath != null) {
+			Settings.bibFilePath = bibFilePath;
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public static List<String> getRenamingFormat()
@@ -60,7 +52,8 @@ public class Settings
 	
 	public static boolean setRenamingFormat(String renamingformat) 
 	{
-		return generateBibKey;
+		boolean validFormat = false;
+		return validFormat;
 		
 	}
 	
@@ -82,26 +75,6 @@ public class Settings
 	public static boolean removeIgnoredFile(String ignoredFile )  
 	{
 		return false ;
-	}
-	
-	public static boolean getGenerateBibKey() 
-	{
-		return generateBibKey;
-	}
-	
-	public static void setGenerateBibKey(boolean generateBibKey) 
-	{
-		this.generateBibKey = generateBibKey;
-	}
-	
-	public static List<String> getBibKeyGenerationFormat() 
-	{
-		return null ;
-	}
-	
-	public static void setBibKeyGenerationFormat(String bibKeyGenerationFormat) 
-	{
-		this.bibKeyGenerationFormat = bibKeyGenerationFormat;
 	}
 	
 	public static List<String> getVisualizationBibFields() 
