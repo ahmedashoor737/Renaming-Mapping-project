@@ -1,56 +1,54 @@
-import java.util.Map;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.List;
+import org.jbibtex.*;
 
 public class BibItem {
-	private Paper paper ;
-	private String entryType;
-	private String bibKey; 
-	private String originalBibKey;
-	private Map<String, String> bibFields;
-	private String originalEntry;
+	private BibTeXEntry entry; 
+
 	/**
 	 * an empty constructor
 	 */
-	BibItem(){}
+	public BibItem(){}
+
+	public BibItem(BibTeXEntry entry) {
+		this.entry = entry;
+	}
 
 	/**
 	 * 
-	 * @param paper paper related to this bib item
-	 * @param entryType a field for entrytype
-	 * @param bibKey a field for bibkey
-	 * @param originalBibKey a field to save original bibkey(dose not change)
-	 * @param bibFields list of rest of bib fields
 	 * @param originalEntry a field to save original Entry(dose not change)
 	 */
-	BibItem(Paper paper ,String entryType,String bibKey,String originalBibKey,
-	Map<String, String> bibFields,String originalEntry){	
-		 this.paper = paper ;
-		 this.entryType = entryType;
-		 this.bibKey = bibKey; 
-		 this.originalBibKey = originalBibKey;
-		 this.bibFields = bibFields;
-		 this.originalEntry = originalEntry;
+	public BibItem(String entryAsString) throws ParseException {
+		this(BibItem.stringToBibTeXEntry(entryAsString));
 	}
+
 	/**
 	 * 
 	 * @param field a bib item field
 	 * @return this field
 	 */
-	String getValue(String field) {
+	public String getValue(String field) {
 		return field;
 		
 	}
 	/**
 	 * @return this bibkey 
 	 */
-	String getBibKey(){
-		return bibKey;
+	public String getBibKey(){
+		return null;
 		
 	}
-	/**
-	 * @return if to generate bibkey or not
-	 */
-	boolean generateBibKey(){
-		return false;
-		
+
+	public static BibTeXEntry stringToBibTeXEntry(String bibTeXString) throws ParseException {
+		BibTeXParser parser = new BibTeXParser();
+		Reader reader = new StringReader(bibTeXString);
+		BibTeXDatabase database = parser.parse(reader);
+		List<BibTeXObject> objects = database.getObjects();
+		return (BibTeXEntry)objects.get(0);
+	}
+
+	public static String bibTeXEntryToString(BibTeXEntry bibTeXEntry) {
+		return "";
 	}
 }

@@ -1,4 +1,7 @@
 import java.util.List;
+import java.nio.file.Paths;
+import java.io.IOException;
+import org.jbibtex.*;
 
 /**
  * The entry class of BibCase. Initializes the system parts including settings and GUI.
@@ -13,7 +16,7 @@ public class BibCase {
 		test();
 		//entry point
 
-		//configuration (settings)
+		//configuration (settings) - copy of settings, copy of bibfile
 		//send papers to be renamed
 		//populateReferences of existingPapers
 		//generate reference visualization
@@ -21,7 +24,27 @@ public class BibCase {
 	}
 
 	public static void test() {
-		BibTexFinder.findBibItemByTitle("2d and 3d visualizations of aspectj programs", new Paper(""));
+
+		try {
+			boolean pathIsSet = Settings.setBibFilePath(Paths.get("samples", "mybib.bib"));
+			if (pathIsSet) {
+				BibTexFinder finder = new BibTexFinder(Settings.getBibFilePath());
+				
+				//opening multiple instances of bibfile could mean losing data
+				finder.findBibItemByTitle("A big paper");
+				finder.findBibItemByCitation("Wilson, S. and McDermid, J. (1995), Integrated analysis of complex safety critical systems, The Computer Journal, 1995.");
+				finder.close();
+
+				BibTexFinder.findByTitle("2d and 3d visualizations of aspectj programs");
+				BibTexFinder.findByCitation("Takang, A. and Grubb, R. (1996), Software maintenance, Concepts and Practice, Thompson, London, 1996.");
+			} else {
+				System.out.println(pathIsSet);
+			}
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} catch (ParseException pe) {
+			pe.printStackTrace();
+		}
 	}
 
 	/**
