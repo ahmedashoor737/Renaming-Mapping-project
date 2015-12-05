@@ -24,7 +24,7 @@ public class PDFReader
 	
 	
 	
-	public String findTitle ( File fileLocation )
+	public String findTitle ( File fileLocation ) //changed string filename to File filelocation
 	{
 		paper = PDDocument.load(fileLocation);
 		info = 	paper.getDocumentInformation();
@@ -34,7 +34,7 @@ public class PDFReader
 		return info.getTitle().trim(); //function provided by api to get title
 	}
 	
-	public String getFileAttributes (File fileLocation)
+	public String getFileAttributes (File fileLocation)//changed string filename to File filelocation
 	{
 		BasicFileAttributes attr = Files.readAttributes(fileLocation.getPath(), BasicFileAttributes.class);
 		
@@ -45,7 +45,7 @@ public class PDFReader
 	}
 	
 	
-	public List<Paper> extractReferences (File fileLocation)
+	public List<Paper> extractReferences (File fileLocation)//changed string filename to File filelocation
 	{
 		return null ;//still working on a way to read pdf file without changing format and a way to strip the region of references
 	}
