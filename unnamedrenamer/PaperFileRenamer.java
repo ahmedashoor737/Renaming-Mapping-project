@@ -1,6 +1,9 @@
 import java.util.Queue;
 import java.util.List;
 import java.nio.file.Path;
+import java.nio.file.Files;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * This class is reponsible for renaming files. It renames the file and make a Paper object of it.
@@ -21,8 +24,17 @@ public class PaperFileRenamer {
 	 * @param papersFolder path of papers folder
 	 * @return a list of Paper objects of renamed files
 	 */
-	public List<Paper> batchRenaming(Path papersFolder) {
-		return null;
+	public static List<Paper> batchRenaming(Path papersFolder) {
+		List<Paper> renamedPapers = new LinkedList<Paper>;
+
+		//for all .pdf files
+		  //rename file
+		  //if return null, add to overlooked
+		  //else add to list
+		//handle overlooked
+		  //if renamed add to list
+		  //list add to settings.ignored
+		//return list
 	}
 
 	/**
@@ -32,7 +44,33 @@ public class PaperFileRenamer {
 	 * @return an object of the renamed paper, null if renaming failed
 	 */
 	public static Paper renameFile(String fileName) {
-		return null;
+		/*
+		//is PDFReader static or provide static convenience methods?
+		//simplest way to pass fileName to PDFReader
+		String title = PDFReader.findTitle(fileName);
+		Paper paper = new Paper(fileName, title);
+		//paper finds the bibitem
+		String newFileName = paper.generateFileName();
+		//fileName,originalFileName are appropiately changed in paper
+		//actual file renaming
+		renameTo(fileName, newFileName);
+		return paper;
+		*/
+		try {
+			renameTo(fileName, "renamed"+fileName);
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+			return null;
+		}
+		return new Paper("");
+	}
+
+	//throws?
+	private static void renameTo(String oldName, String newName) throws IOException {
+		File papersFolder = Settings.getFolderPath().toFile();
+		Path oldPaper = new File(papersFolder, oldName).toPath();
+		Path newPaper = new File(papersFolder, newName).toPath();
+		Files.move(oldPaper, newPaper);
 	}
 
 	/**
