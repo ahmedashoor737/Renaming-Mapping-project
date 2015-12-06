@@ -21,12 +21,17 @@ public class Settings
 	// set and get methods :  
 	public static Path getFolderPath()
 	{
-		return folderPath;
+		return Settings.folderPath;
 	}
 	
 	public static boolean setFolderPath(Path folderPath) 
 	{
-		return false ; 
+		if (folderPath != null) {
+			Settings.folderPath = folderPath;
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public static Path getBibFilePath() 
