@@ -1,4 +1,12 @@
-class title test{
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.util.PDFTextStripper;
+import org.apache.pdfbox.util.TextPosition;
+
+class title_test{
 public static void main(String [] arg) throws IOException{
 		
 		PDDocument pdf = PDDocument.load(\\put file);
