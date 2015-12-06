@@ -10,6 +10,11 @@ import org.jbibtex.*;
 public class BibCase {
 	//might change List since we need to search
 	//integrate API?
+	//packages
+
+	//so to use one BibTexFinder without opening/closing file multiple times
+	 //renameFile finds BibItems and passes them to Paper
+	 //populateReferences finds BibItems and passes them to Paper
 	private static List<Paper> existingPapers;
 	private static List<Paper> referencedNonExistingPapers;
 
