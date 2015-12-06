@@ -63,4 +63,9 @@ public class BibCase {
 	/**
 	 * Add/remove/find paper methods
 	 */
+        
+        public static int lengthOfExistingPapers(){
+        return existingPapers.size();
+        }
+
 }

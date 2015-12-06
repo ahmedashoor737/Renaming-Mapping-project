@@ -1,3 +1,8 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 
 /**
@@ -20,7 +25,9 @@ public class Paper {
 	 * @param title paper's title
 	 */
 	public Paper(String originalFileName, String title) {
-		
+            this.originalFileName = originalFileName;
+            this.title = title;
+            year = ; // the published year!?
 	}
 
 	/**
@@ -66,8 +73,11 @@ public class Paper {
 	 * 
 	 * @return the new file name, or null if Paper has no file
 	 */
-	public String generateFileName() {
-		return "";
+	public String generateFileName() throws IOException {
+            String theCounter = String.format("%04d",BibCase.lengthOfExistingPapers()); 
+            String creationYear = getCreationDate();
+            String theGenerateFileName = String.format("%s    %s %s %s",theCounter,creationYear,title,year);
+		return theGenerateFileName;
 	}
 
 	/**
@@ -75,8 +85,16 @@ public class Paper {
 	 *
 	 * @return creation date of file, or null if Paper has no file
 	 */
-	private String getCreationDate() {
-		return "";
+	private String getCreationDate() throws IOException {
+           
+                Path file = Paths.get(originalFileName);
+                BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
+                String creationTime = attr.creationTime()+"";
+                String creationDate = creationTime.substring(0,10);
+                
+                 return creationDate;
+            
+             
 	}
 
 	/**
@@ -87,4 +105,16 @@ public class Paper {
 	public boolean isExistingPaper() {
 		return true;
 	}
+        /**
+	 * Shows whether the Paper is renamed or not
+	 *
+	 * @return whether Paper has file of not
+	 */
+        public boolean isRenamed() {
+            
+            if(!fileName.isEmpty())
+                return true;
+            return false;
+        }
+        
 }
