@@ -21,7 +21,7 @@ public class BibCase {
 		//send papers to be renamed
 		//populateReferences of existingPapers
 		//generate reference visualization
-		//keep monitering folder (add->rename, remove->handle)
+		//keep monitering folder (add->rename-visualize, remove->handle)
 	}
 
 	public static void test() {
