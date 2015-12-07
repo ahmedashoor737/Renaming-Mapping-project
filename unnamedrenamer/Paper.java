@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * The class defines a research paper. The paper could or could not exist as a file in the system.
@@ -21,21 +22,23 @@ public class Paper {
 	/**
 	 * Creates a paper that has a corresponding file.
 	 *
+         * @param bibItem 
 	 * @param originalFileName name of file
-	 * @param title paper's title
+	 * 
 	 */
-	public Paper(String originalFileName, String title) {
+	public Paper(BibItem bibItem,String originalFileName) {
+            this.bibItem = bibItem;
             this.originalFileName = originalFileName;
-            this.title = title;
-            year = ; // the published year!?
+            year = bibItem.getValue("Year");
+            
+            
 	}
 
-	/**
-	 * Creates a paper that doesn't have a corresponding file and finds its information.
-	 *
-	 * @param citation the citation containing the paper information
-	 */
-	public Paper(String citation) {
+	
+        
+	public Paper(BibItem bibItem) {
+            this.bibItem = bibItem;
+            year = bibItem.getValue("Year");
 
 	}
 
@@ -70,6 +73,17 @@ public class Paper {
 	 * @param referencingPaper a paper that references this paper
 	 */
 	private void addReferencingPaper(Paper referencingPaper) {
+            boolean found = false;
+            ListIterator<Paper> searchIterator = referencingPapers.listIterator();
+            while (searchIterator.hasNext() && !found) {
+                 Paper  paper = searchIterator.next();
+                 if(paper == referencingPaper){
+                    found =true;
+                }
+            }
+            if(!found){
+            referencingPapers.add(referencingPaper);
+            }
 
 	}
 
@@ -88,11 +102,12 @@ public class Paper {
 	 * 
 	 * @return the new file name, or null if Paper has no file
 	 */
-	public String generateFileName() throws IOException {
+	public String generateFileName() throws IOException  {
             String theCounter = String.format("%04d",BibCase.lengthOfExistingPapers()); 
             String creationYear = getCreationDate();
-            String theGenerateFileName = String.format("%s    %s %s %s",theCounter,creationYear,title,year);
-		return theGenerateFileName;
+            String theGenerateFileName = String.format("%s    %s %s %s.pdf",theCounter,creationYear,title,year);
+            fileName = theGenerateFileName;
+            return theGenerateFileName;
 	}
 
 	/**
@@ -102,24 +117,28 @@ public class Paper {
 	 */
 	private String getCreationDate() throws IOException {
            
-                Path file = Paths.get(originalFileName);
-                BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
-                String creationTime = attr.creationTime()+"";
-                String creationDate = creationTime.substring(0,10);
-                
-                 return creationDate;
-            
-             
+            Path file = Paths.get(originalFileName);
+            BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
+            String creationTime = attr.creationTime()+"";
+            String creationDate = creationTime.substring(0,10);
+
+             return creationDate;
+
 	}
+        public void setoriginalFileName (String originalFileName){
+            this.originalFileName=originalFileName;
+        }
 
 	/**
 	 * Shows whether the Paper is linked with an existing file or not
 	 *
 	 * @return whether Paper has file of not
 	 */
+        
 	public boolean isExistingPaper() {
-		return true;
+		return originalFileName!=null;
 	}
+        
         /**
 	 * Shows whether the Paper is renamed or not
 	 *
@@ -127,9 +146,7 @@ public class Paper {
 	 */
         public boolean isRenamed() {
             
-            if(!fileName.isEmpty())
-                return true;
-            return false;
+            return !fileName.isEmpty();
         }
         
 }
