@@ -1,4 +1,5 @@
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.List;
 
 public class Settings 
@@ -9,7 +10,7 @@ public class Settings
 	private static Path bibFilePath ;
 	private static String defaultRenamingFormat  ; 
 	private static String renamingformat ; 
-	private static String ignoredFiles ; 
+	private static List<String> ignoredFiles ; 
 	private static String visualizationBibFields ;
 	
 	/**
@@ -69,12 +70,12 @@ public class Settings
 	
 	public static List<String> getIgnoredFiles()  
 	{
-		return null ;
+		return this.ignoredFiles;
 	}
 	
-	public static void addIgnoredFiles(String ignoredFiles)
+	public static void addIgnoredFiles(Collection<String> ignoredFiles)
 	{
-		
+		this.ignoredFiles.addAll(ignoredFiles);
 	}
 	
 	public static boolean removeIgnoredFile(String ignoredFile )  
