@@ -47,6 +47,21 @@ public class Paper {
 	 */
 	public boolean populateReferences() {
 		return true;
+		/*
+		List<String> citations = pdfreader.getReferences()
+		BibTexFinder finder = ..
+		//finds bibitems for each citation (try-catch exceptions)
+		//looks for a matching Paper object in BibCase's referencedNonExistingPapers or existingPapers
+		//Paper reference;
+		  if found in existingPapers
+		    reference = found paper
+		  if found in referencedNonExistingPapers
+		    reference = found paper
+		  if not found
+		    pass bibitem to new Paper object
+		//add reference to this.references
+		//add this paper to reference's referencingPapers
+		*/
 	}
 
 	/**
