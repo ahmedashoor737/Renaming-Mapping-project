@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.LinkedList;
 import java.nio.file.Paths;
 import java.io.IOException;
 import org.jbibtex.*;
@@ -15,8 +16,8 @@ public class BibCase {
 	//so to use one BibTexFinder without opening/closing file multiple times
 	 //renameFile finds BibItems and passes them to Paper
 	 //populateReferences finds BibItems and passes them to Paper
-	private static List<Paper> existingPapers;
-	private static List<Paper> referencedNonExistingPapers;
+	private static List<Paper> existingPapers = new LinkedList<Paper>();
+	private static List<Paper> referencedNonExistingPapers = new LinkedList<Paper>();
 
 	public static void main(String[] args) {
 		test();
@@ -31,13 +32,19 @@ public class BibCase {
 
 	public static void test() {
 		boolean pathIsSet = Settings.setBibFilePath(Paths.get("samples", "mybib.bib"));
-		BibItem item = new BibItem(BibFile.findBibItemByTitle("A small paper", Settings.getBibFilePath()));
-		System.out.println(item.getValue(BibTeXEntry.KEY_AUTHOR));
-		System.out.println(item.getValue("AUTHOR"));
-		System.out.println(item.getValue("author"));
-		System.out.println("DOI: " + item.getValue("doi"));
-		System.out.println(item.getBibKey());
-		System.out.println(item.getType());
+		try {
+			BibItem item = new BibItem(BibFile.findBibItemByTitle("A small paper", Settings.getBibFilePath()));
+			System.out.println(item.getValue(BibTeXEntry.KEY_AUTHOR));
+			System.out.println(item.getValue("AUTHOR"));
+			System.out.println(item.getValue("author"));
+			System.out.println("DOI: " + item.getValue("doi"));
+			System.out.println(item.getBibKey());
+			System.out.println(item.getType());
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} catch (ParseException pe) {
+			pe.printStackTrace();
+		}
 
 
 		//getValue(key)
@@ -68,7 +75,15 @@ public class BibCase {
 	/**
 	 * Add/remove/find paper methods
 	 */
-        
+		public static Paper findPaperinExistingPaper(String title) {
+			return null;
+		}
+
+		//list search?
+		public static Paper findPaperInReferences(String title) {
+			return null;
+		}
+
         public static int lengthOfExistingPapers(){
         return existingPapers.size();
         }

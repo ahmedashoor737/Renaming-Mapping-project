@@ -29,15 +29,15 @@ public class Paper {
 	public Paper(BibItem bibItem,String originalFileName) {
             this.bibItem = bibItem;
             this.originalFileName = originalFileName;
+            this.title = bibItem.getValue("title");
             year = bibItem.getValue("Year");
-            
-            
 	}
 
 	
         
 	public Paper(BibItem bibItem) {
             this.bibItem = bibItem;
+            this.title = bibItem.getValue("title");
             year = bibItem.getValue("Year");
 
 	}
@@ -105,7 +105,7 @@ public class Paper {
 	public String generateFileName() throws IOException  {
             String theCounter = String.format("%04d",BibCase.lengthOfExistingPapers()); 
             String creationYear = getCreationDate();
-            String theGenerateFileName = String.format("%s    %s %s %s.pdf",theCounter,creationYear,title,year);
+            String theGenerateFileName = String.format("%s     %s %s %s.pdf",theCounter,creationYear,title,year);
             fileName = theGenerateFileName;
             return theGenerateFileName;
 	}
@@ -117,7 +117,7 @@ public class Paper {
 	 */
 	private String getCreationDate() throws IOException {
            
-            Path file = Paths.get(originalFileName);
+            Path file = Paths.get(Settings.getFolderPath().toString(), originalFileName);
             BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
             String creationTime = attr.creationTime()+"";
             String creationDate = creationTime.substring(0,10);

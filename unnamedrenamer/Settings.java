@@ -70,12 +70,12 @@ public class Settings
 	
 	public static List<String> getIgnoredFiles()  
 	{
-		return this.ignoredFiles;
+		return ignoredFiles;
 	}
 	
-	public static void addIgnoredFiles(Collection<String> ignoredFiles)
+	public static void addIgnoredFiles(Collection<String> newIgnoredFiles)
 	{
-		this.ignoredFiles.addAll(ignoredFiles);
+		ignoredFiles.addAll(newIgnoredFiles);
 	}
 	
 	public static boolean removeIgnoredFile(String ignoredFile )  
