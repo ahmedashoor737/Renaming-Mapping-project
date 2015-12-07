@@ -78,18 +78,12 @@ public class BibFile {
 	 * @param bibFilePath the .bib file to search in
 	 * @return null if not found, a matching BibTeXEntry otherwise
 	 */
-	public static BibTeXEntry findBibItemByTitle(String title, Path bibFilePath) {
+	public static BibTeXEntry findBibItemByTitle(String title, Path bibFilePath) throws IOException, ParseException {
 		BibTeXEntry entry = null;
 
-		try {
-			BibFile bibFile = new BibFile(bibFilePath);
-			bibFile.loadDatabaseFromFile();
-			entry = bibFile.findBibItemByTitle(title);
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		} catch (ParseException pe) {
-			pe.printStackTrace();
-		}
+		BibFile bibFile = new BibFile(bibFilePath);
+		bibFile.loadDatabaseFromFile();
+		entry = bibFile.findBibItemByTitle(title);
 
 		return entry;
 	}

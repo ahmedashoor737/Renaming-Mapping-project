@@ -58,23 +58,13 @@ public class BibTexFinder {
 	 * @param title of paper
 	 * @return BibItem containing the found entry, null if not found.
 	 */
-	public BibItem findBibItemByTitle(String title) {
+	public BibItem findBibItemByTitle(String title) throws MalformedURLException, IOException, URISyntaxException, ParseException {
 		BibTeXEntry entry = findInFile(title);
 
 		if (entry == null && doLookOnline) {
-			try {
-				String bibItemString = findOnCrossRef(title);
-				entry = BibItem.stringToBibTeXEntry(bibItemString);
-				bibFile.addBibTeXEntry(entry);
-			} catch (MalformedURLException murle) {
-				murle.printStackTrace();
-			} catch (IOException ioe) {
-				ioe.printStackTrace();
-			} catch (URISyntaxException urise) {
-				urise.printStackTrace();
-			} catch (ParseException pe) {
-				pe.printStackTrace();
-			}
+			String bibItemString = findOnCrossRef(title);
+			entry = BibItem.stringToBibTeXEntry(bibItemString);
+			bibFile.addBibTeXEntry(entry);
 		}
 		
 		return new BibItem(entry);
@@ -87,7 +77,7 @@ public class BibTexFinder {
 	 * @param title of paper
 	 * @return BibItem containing the found entry, null if not found.
 	 */
-	public static BibItem findByTitle(String title) throws IOException, ParseException {
+	public static BibItem findByTitle(String title) throws IOException, ParseException, URISyntaxException {
 		BibTexFinder finder = new BibTexFinder(Settings.getBibFilePath(), true);
 		BibItem bibItem = finder.findBibItemByTitle(title);
 
@@ -101,22 +91,12 @@ public class BibTexFinder {
 	 * @param citation with paper information
 	 * @return BibItem containing the found entry, null if not found.
 	 */
-	public BibItem findBibItemByCitation(String citation) {
+	public BibItem findBibItemByCitation(String citation) throws MalformedURLException, IOException, URISyntaxException, ParseException {
 		if (doLookOnline) {
-			try {
-				String bibItemString = findOnCrossRef(citation);
-				BibTeXEntry entry = BibItem.stringToBibTeXEntry(bibItemString);
-				bibFile.addBibTeXEntry(entry);
-				return new BibItem(entry);
-			} catch (MalformedURLException murle) {
-				murle.printStackTrace();
-			} catch (IOException ioe) {
-				ioe.printStackTrace();
-			} catch (URISyntaxException urise) {
-				urise.printStackTrace();
-			} catch (ParseException pe) {
-				pe.printStackTrace();
-			}
+			String bibItemString = findOnCrossRef(citation);
+			BibTeXEntry entry = BibItem.stringToBibTeXEntry(bibItemString);
+			bibFile.addBibTeXEntry(entry);
+			return new BibItem(entry);
 		}
 
 		return null;
@@ -129,7 +109,7 @@ public class BibTexFinder {
 	 * @param citation with paper information
 	 * @return BibItem containing the found entry, null if not found.
 	 */
-	public static BibItem findByCitation(String citation) throws IOException, ParseException{
+	public static BibItem findByCitation(String citation) throws IOException, ParseException, URISyntaxException {
 		BibTexFinder finder = new BibTexFinder(Settings.getBibFilePath(), true);
 		BibItem bibItem = finder.findBibItemByCitation(citation);
 
