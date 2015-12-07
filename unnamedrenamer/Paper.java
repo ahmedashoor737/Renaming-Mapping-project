@@ -125,7 +125,7 @@ public class Paper {
              return creationDate;
 
 	}
-        public void setoriginalFileName (String originalFileName){
+        public void setOriginalFileName (String originalFileName){
             this.originalFileName=originalFileName;
         }
 
