@@ -22,24 +22,21 @@ public class Paper {
 	/**
 	 * Creates a paper that has a corresponding file.
 	 *
-         * @param bibItem 
+	 * @param bibItem 
 	 * @param originalFileName name of file
 	 * 
 	 */
 	public Paper(BibItem bibItem,String originalFileName) {
-            this.bibItem = bibItem;
-            this.originalFileName = originalFileName;
-            this.title = bibItem.getValue("title");
-            year = bibItem.getValue("Year");
+		this.bibItem = bibItem;
+		this.originalFileName = originalFileName;
+		this.title = bibItem.getValue("title");
+		year = bibItem.getValue("Year");
 	}
 
-	
-        
 	public Paper(BibItem bibItem) {
-            this.bibItem = bibItem;
-            this.title = bibItem.getValue("title");
-            year = bibItem.getValue("Year");
-
+		this.bibItem = bibItem;
+		this.title = bibItem.getValue("title");
+		year = bibItem.getValue("Year");
 	}
 
 	/**
@@ -57,11 +54,11 @@ public class Paper {
 		//looks for a matching Paper object in BibCase's referencedNonExistingPapers or existingPapers
 		//Paper reference;
 		  if found in existingPapers
-		    reference = found paper
+			reference = found paper
 		  if found in referencedNonExistingPapers
-		    reference = found paper
+			reference = found paper
 		  if not found
-		    pass bibitem to new Paper object
+			pass bibitem to new Paper object
 		//add reference to this.references
 		//add this paper to reference's referencingPapers
 		*/
@@ -73,18 +70,17 @@ public class Paper {
 	 * @param referencingPaper a paper that references this paper
 	 */
 	private void addReferencingPaper(Paper referencingPaper) {
-            boolean found = false;
-            ListIterator<Paper> searchIterator = referencingPapers.listIterator();
-            while (searchIterator.hasNext() && !found) {
-                 Paper  paper = searchIterator.next();
-                 if(paper == referencingPaper){
-                    found =true;
-                }
-            }
-            if(!found){
-            referencingPapers.add(referencingPaper);
-            }
-
+		boolean found = false;
+		ListIterator<Paper> searchIterator = referencingPapers.listIterator();
+		while (searchIterator.hasNext() && !found) {
+			 Paper  paper = searchIterator.next();
+			 if(paper == referencingPaper){
+				found =true;
+			}
+		}
+		if(!found){
+		referencingPapers.add(referencingPaper);
+		}
 	}
 
 	/**
@@ -103,11 +99,11 @@ public class Paper {
 	 * @return the new file name, or null if Paper has no file
 	 */
 	public String generateFileName() throws IOException  {
-            String theCounter = String.format("%04d",BibCase.lengthOfExistingPapers()); 
-            String creationYear = getCreationDate();
-            String theGenerateFileName = String.format("%s     %s %s %s.pdf",theCounter,creationYear,title,year);
-            fileName = theGenerateFileName;
-            return theGenerateFileName;
+			String theCounter = String.format("%04d",BibCase.lengthOfExistingPapers()); 
+			String creationYear = getCreationDate();
+			String theGenerateFileName = String.format("%s     %s %s %s.pdf",theCounter,creationYear,title,year);
+			fileName = theGenerateFileName;
+			return theGenerateFileName;
 	}
 
 	/**
@@ -116,37 +112,64 @@ public class Paper {
 	 * @return creation date of file, or null if Paper has no file
 	 */
 	private String getCreationDate() throws IOException {
-           
-            Path file = Paths.get(Settings.getFolderPath().toString(), originalFileName);
-            BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
-            String creationTime = attr.creationTime()+"";
-            String creationDate = creationTime.substring(0,10);
+		   
+			Path file = Paths.get(Settings.getFolderPath().toString(), originalFileName);
+			BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
+			String creationTime = attr.creationTime()+"";
+			String creationDate = creationTime.substring(0,10);
 
-             return creationDate;
+			 return creationDate;
 
 	}
-        public void setOriginalFileName (String originalFileName){
-            this.originalFileName=originalFileName;
-        }
+
+	public void setOriginalFileName (String originalFileName){
+		this.originalFileName=originalFileName;
+	}
 
 	/**
 	 * Shows whether the Paper is linked with an existing file or not
 	 *
 	 * @return whether Paper has file of not
-	 */
-        
+	 */		
 	public boolean isExistingPaper() {
 		return originalFileName!=null;
 	}
-        
-        /**
+		
+	/**
 	 * Shows whether the Paper is renamed or not
 	 *
 	 * @return whether Paper has file of not
 	 */
-        public boolean isRenamed() {
-            
-            return !fileName.isEmpty();
-        }
-        
+	public boolean isRenamed() {
+		
+		return !fileName.isEmpty();
+	}
+
+	public String getTitle() {
+		return this.title;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Paper) {
+			Paper that = (Paper)obj;
+			String thisDOI = this.bibItem.getValue("doi");
+			String thatDOI = that.bibItem.getValue("doi");
+			if (thisDOI != null && thatDOI != null) {
+				return thisDOI.equals(thatDOI);
+			} else {
+				String thisYear = this.bibItem.getValue("year");
+				String thatYear = that.bibItem.getValue("year");
+				if (thisYear != null && thatDOI != null) {
+					String thisTitle = this.bibItem.getValue("title");
+					String thatTitle = that.bibItem.getValue("title");
+					if (thisTitle != null && thatTitle != null) {
+						return thisTitle.equals(thatTitle);
+					}
+				}
+			}
+		}
+
+		return false;
+	}
 }

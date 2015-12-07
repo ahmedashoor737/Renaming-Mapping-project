@@ -1,3 +1,4 @@
+import java.util.Collection;
 import java.util.List;
 import java.util.LinkedList;
 import java.nio.file.Paths;
@@ -13,79 +14,88 @@ public class BibCase {
 	//integrate API?
 	//packages
 
-	//so to use one BibTexFinder without opening/closing file multiple times
-	 //renameFile finds BibItems and passes them to Paper
-	 //populateReferences finds BibItems and passes them to Paper
 	private static List<Paper> existingPapers = new LinkedList<Paper>();
 	private static List<Paper> referencedNonExistingPapers = new LinkedList<Paper>();
 
 	public static void main(String[] args) {
-		test();
-		//entry point
+		initialize();
+		
+		//monitorFolder(Settings.getFolderPath());
 
-		//configuration (settings) - copy of settings, copy of bibfile
-		//send papers to be renamed
-		//populateReferences of existingPapers
-		//generate reference visualization
+		//gui > Settings > Notes > Visualization
 		//keep monitering folder (add->rename-visualize, remove->handle)
 	}
 
-	public static void test() {
-		boolean pathIsSet = Settings.setBibFilePath(Paths.get("samples", "mybib.bib"));
+	public static void initialize() {
+		configure();
+
 		try {
-			BibItem item = new BibItem(BibFile.findBibItemByTitle("A small paper", Settings.getBibFilePath()));
-			System.out.println(item.getValue(BibTeXEntry.KEY_AUTHOR));
-			System.out.println(item.getValue("AUTHOR"));
-			System.out.println(item.getValue("author"));
-			System.out.println("DOI: " + item.getValue("doi"));
-			System.out.println(item.getBibKey());
-			System.out.println(item.getType());
+			BibTexFinder finder = new BibTexFinder(Settings.getBibFilePath());
+			PaperFileRenamer renamer = new PaperFileRenamer(Settings.getFolderPath(), finder);
+			existingPapers.addAll(renamer.batchRenaming());
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
+			//do something
 		} catch (ParseException pe) {
 			pe.printStackTrace();
+			//do something
 		}
 
+		for (Paper paper : existingPapers) {
+			paper.populateReferences();
+		}
 
-		//getValue(key)
-		//getValue(string)
-		//getBibKey()
+		//generate references visualization
+	}
 
-		/*try {
-			if (pathIsSet) {
-				BibTexFinder finder = new BibTexFinder(Settings.getBibFilePath());
-				
-				//opening multiple instances of bibfile could mean losing data
-				finder.findBibItemByTitle("A big paper");
-				finder.findBibItemByCitation("Wilson, S. and McDermid, J. (1995), Integrated analysis of complex safety critical systems, The Computer Journal, 1995.");
-				finder.close();
-
-				BibTexFinder.findByTitle("2d and 3d visualizations of aspectj programs");
-				BibTexFinder.findByCitation("Takang, A. and Grubb, R. (1996), Software maintenance, Concepts and Practice, Thompson, London, 1996.");
-			} else {
-				System.out.println(pathIsSet);
-			}
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		} catch (ParseException pe) {
-			pe.printStackTrace();
-		}*/
+	public static void configure() {
+		Settings.setBibFilePath(Paths.get("samples", "mybib.bib"));
+		Settings.setFolderPath(Paths.get("samples"));
+		//load settings
+		//choose folder and .bib file
 	}
 
 	/**
 	 * Add/remove/find paper methods
 	 */
-		public static Paper findPaperinExistingPaper(String title) {
-			return null;
+	public static Paper findPaperinExistingPaper(String title) {
+		return searchCollectionByTitle(existingPapers, title);
+	}
+
+	public static Paper findPaperInReferences(String title) {
+		return searchCollectionByTitle(referencedNonExistingPapers, title);
+	}
+
+	public static Paper findPaperinExistingPaper(BibItem bibItem) {
+		return searchCollectionByBibItem(existingPapers, bibItem);
+	}
+
+	public static Paper findPaperInReferences(BibItem bibItem) {
+		return searchCollectionByBibItem(referencedNonExistingPapers, bibItem);
+	}
+
+	private static Paper searchCollectionByBibItem(Collection<Paper> paperCollection, BibItem bibItem) {
+		Paper target = new Paper(bibItem);
+		for (Paper paper : paperCollection) {
+			if (paper.equals(target)) {
+				return paper;
+			}
 		}
 
-		//list search?
-		public static Paper findPaperInReferences(String title) {
-			return null;
+		return null;
+	}
+
+	private static Paper searchCollectionByTitle(Collection<Paper> paperCollection, String title) {
+		for (Paper paper : paperCollection) {
+			if (paper.getTitle().equalsIgnoreCase(title)) {
+				return paper;
+			}
 		}
 
-        public static int lengthOfExistingPapers(){
-        return existingPapers.size();
-        }
+		return null;	
+	}
 
+	public static int lengthOfExistingPapers() {
+		return existingPapers.size();
+	}
 }
