@@ -19,7 +19,7 @@ public class PDFReader extends PDFTextStripper
 {
 	public PDFReader() throws IOException {
 		super();
-		
+		strip = new PDFTextStripper();
 	}
 
 
@@ -43,7 +43,7 @@ public class PDFReader extends PDFTextStripper
 		info = 	paper.getDocumentInformation();
 
 		String titleWithWhiteSpaces = strip.getText(paper);
-		StringBuilder title = null;
+		StringBuilder title = new StringBuilder();
 		StringTokenizer tk =new StringTokenizer(titleWithWhiteSpaces);
 		while(tk.hasMoreTokens() ){
 			   
