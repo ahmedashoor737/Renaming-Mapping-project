@@ -1,4 +1,3 @@
-
 import java.util.List;
 import java.util.StringTokenizer;
 import java.io.File;
@@ -89,9 +88,9 @@ public class PDFReader
 		
 		if (title.toString().isEmpty() || title.toString() == null  )
 		{
-			title.append(info.getTitle());}
+			title.append(info.getTitle());
+		}
 		
-		tk.close();
 		paper.close();
 		
 		return title.toString();
@@ -113,36 +112,13 @@ public class PDFReader
 	}
 	
 	
-	public List<Paper> extractReferences (File fileLocation)//changed string filename to File filelocation
-	{
-		return null ;//leaving this to cermine
-	}
-	
-	
-	
-	
-	
-	
-	
-	//override the text extracting method of PDFTextStripper 
-	 protected void writeString(String text, List<TextPosition> textPositions) throws IOException
-	    {
-	        StringBuilder builder = new StringBuilder();
 
-	        for (TextPosition position : textPositions)
-	        {
-	            
-	             
-	            if (position.getFontSizeInPt() >=13 &&position.getY()>0 && position.getY()<500)
-	            {
-	                builder.append(position.getCharacter());
-	            }
-	             
-	            
-	        }
-	        
-	       writeString(builder.toString());
-	        
-	    }
-
+	
+	
+	
+	
+	
+	
+	
+	 
 }
