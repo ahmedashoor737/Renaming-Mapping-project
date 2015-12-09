@@ -15,7 +15,16 @@ import org.apache.pdfbox.util.TextPosition;
 
 
 
+<<<<<<< HEAD
 public class PDFReader {
+=======
+public class PDFReader extends PDFTextStripper
+{
+	public PDFReader() throws IOException {
+		super();
+		strip = new PDFTextStripper();
+	}
+>>>>>>> c7df2bb2c1c1fb68e519fae485eb332f5b62c0e8
 
 	static float max = 0;
     static float size =0;
@@ -79,7 +88,11 @@ public class PDFReader {
 		info = 	paper.getDocumentInformation();
 		
 		String titleWithWhiteSpaces = strip.getText(paper);
+<<<<<<< HEAD
 		StringBuilder title = new StringBuilder() ;
+=======
+		StringBuilder title = new StringBuilder();
+>>>>>>> c7df2bb2c1c1fb68e519fae485eb332f5b62c0e8
 		StringTokenizer tk =new StringTokenizer(titleWithWhiteSpaces);
 		while(tk.hasMoreTokens() ){
 			   

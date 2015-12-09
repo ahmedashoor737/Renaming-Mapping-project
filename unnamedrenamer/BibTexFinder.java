@@ -22,6 +22,8 @@ import org.jbibtex.*;
 public class BibTexFinder {
 	private BibFile bibFile;
 	private boolean doLookOnline;
+	//given by CrossRef
+	private int maximumQueryLength = 4096;
 
 	/**
 	 * Same as BibTexFinder(bibFilePath, true)
@@ -61,6 +63,10 @@ public class BibTexFinder {
 	public BibItem findBibItemByTitle(String title) throws MalformedURLException, IOException, URISyntaxException, ParseException {
 		BibTeXEntry entry = findInFile(title);
 
+		if (title.length() > maximumQueryLength) {
+			throw new IOException("Query is too long");
+		}
+
 		if (entry == null && doLookOnline) {
 			String bibItemString = findOnCrossRef(title);
 			entry = BibItem.stringToBibTeXEntry(bibItemString);
@@ -92,6 +98,10 @@ public class BibTexFinder {
 	 * @return BibItem containing the found entry, null if not found.
 	 */
 	public BibItem findBibItemByCitation(String citation) throws MalformedURLException, IOException, URISyntaxException, ParseException {
+		if (citation.length() > maximumQueryLength) {
+			throw new IOException("Query is too long");
+		}
+
 		if (doLookOnline) {
 			String bibItemString = findOnCrossRef(citation);
 			BibTeXEntry entry = BibItem.stringToBibTeXEntry(bibItemString);

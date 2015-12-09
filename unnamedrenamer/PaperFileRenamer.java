@@ -78,7 +78,7 @@ public class PaperFileRenamer {
 		}
 
 		Paper paper;
-		paper = BibCase.findPaperInReferences(bibItem); //need to also remove it from there
+		paper = BibCase.removeFromReferences(bibItem);
 		if (paper != null) {
 			paper.setOriginalFileName(fileName);
 		} else {

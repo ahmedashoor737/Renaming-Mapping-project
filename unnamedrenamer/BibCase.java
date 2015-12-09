@@ -1,6 +1,7 @@
 import java.util.Collection;
-import java.util.List;
-import java.util.LinkedList;
+import java.util.Set;
+import java.util.LinkedHashSet;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.IOException;
 import org.jbibtex.*;
@@ -14,9 +15,12 @@ public class BibCase {
 	//integrate API?
 	//packages
 
-	private static List<Paper> existingPapers = new LinkedList<Paper>();
-	private static List<Paper> referencedNonExistingPapers = new LinkedList<Paper>();
-
+	//existing papers are papers with a pdf file
+	private static Set<Paper> existingPapers = new LinkedHashSet<Paper>();
+	//referenced non existing papers are papers that were references but have no pdf file
+	private static Set<Paper> referencedNonExistingPapers = new LinkedHashSet<Paper>();
+	//using hash set for more efficent remove(Paper) method?
+	
 	public static void main(String[] args) {
 		initialize();
 		
@@ -58,20 +62,31 @@ public class BibCase {
 	/**
 	 * Add/remove/find paper methods
 	 */
-	public static Paper findPaperinExistingPaper(String title) {
-		return searchCollectionByTitle(existingPapers, title);
-	}
-
-	public static Paper findPaperInReferences(String title) {
-		return searchCollectionByTitle(referencedNonExistingPapers, title);
-	}
-
 	public static Paper findPaperinExistingPaper(BibItem bibItem) {
 		return searchCollectionByBibItem(existingPapers, bibItem);
 	}
 
 	public static Paper findPaperInReferences(BibItem bibItem) {
 		return searchCollectionByBibItem(referencedNonExistingPapers, bibItem);
+	}
+
+	public static Paper removeFromExistingPapers(BibItem bibItem) {
+		return removeFromCollection(existingPapers, bibItem);
+	}
+
+	public static Paper removeFromReferences(BibItem bibItem) {
+		return removeFromCollection(referencedNonExistingPapers, bibItem);
+	}
+
+	/**
+	 * I can't just remove(new Paper(BibItem)). I need a reference to the original Paper object because that's what is referenced by other Paper objects.
+	 */
+	public static Paper removeFromCollection(Collection<Paper> paperCollection, BibItem bibItem) {
+		Paper paper = searchCollectionByBibItem(paperCollection, bibItem);
+		if (paper != null) {
+			paperCollection.remove(paper);
+		}
+		return paper;
 	}
 
 	private static Paper searchCollectionByBibItem(Collection<Paper> paperCollection, BibItem bibItem) {
@@ -83,16 +98,6 @@ public class BibCase {
 		}
 
 		return null;
-	}
-
-	private static Paper searchCollectionByTitle(Collection<Paper> paperCollection, String title) {
-		for (Paper paper : paperCollection) {
-			if (paper.getTitle().equalsIgnoreCase(title)) {
-				return paper;
-			}
-		}
-
-		return null;	
 	}
 
 	public static int lengthOfExistingPapers() {

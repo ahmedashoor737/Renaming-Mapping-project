@@ -1,6 +1,7 @@
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
+import java.util.LinkedList;
 
 public class Settings 
 {
@@ -10,7 +11,7 @@ public class Settings
 	private static Path bibFilePath ;
 	private static String defaultRenamingFormat  ; 
 	private static String renamingformat ; 
-	private static List<String> ignoredFiles ; 
+	private static List<String> ignoredFiles = new LinkedList<String>(); 
 	private static String visualizationBibFields ;
 	
 	/**
