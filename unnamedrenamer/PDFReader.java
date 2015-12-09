@@ -15,46 +15,83 @@ import org.apache.pdfbox.util.TextPosition;
 
 
 
-public class PDFReader extends PDFTextStripper
-{
-	public PDFReader() throws IOException {
-		super();
-		
-	}
+public class PDFReader {
 
+	static float max = 0;
+    static float size =0;
 
 	List<String> fileAttributes ;
 	List<String> refernces ;
 	
-	PDDocument paper;
-	PDFTextStripper strip ;
-	PDDocumentInformation info ;
+	static PDDocument paper;
+	static PDFTextStripper strip ;
+	static PDDocumentInformation info ;
 	
 	
 	
-	public String findTitle ( File fileLocation ) throws IOException //changed string filename to File filelocation
+	public static String findTitle ( File fileLocation ) throws IOException //changed string filename to File filelocation
 	{
+		strip =new PDFTextStripper(){
+				//override the text extracting method of PDFTextStripper 
+				 protected void writeString(String text, List<TextPosition> textPositions) throws IOException
+				    {
+				        StringBuilder builder = new StringBuilder();
+				        
+
+				        for (TextPosition position : textPositions)
+				        {
+
+				        	size =position.getFontSizeInPt();
+				        	System.out.print(size + " ");
+				        	System.out.println(max);
+				        	if ( size >  max ){
+				        		max  =size;
+				        		System.out.println("compared");
+				        	}
+				        	System.out.println(max);
+				        }
+				        for (TextPosition position : textPositions)
+				        {
+				            
+				             
+				            if (max ==  position.getFontSizeInPt() )
+				            {
+				            	//System.out.print(max + " ");
+				                builder.append(position.getCharacter());
+				                
+				            	
+				            }
+				            
+				             
+				            
+				        }
+				        
+				       writeString(builder.toString());
+				        
+				    }};
 		
 		strip.setSortByPosition(true);
+		
 		strip.setStartPage(1);
 		strip.setEndPage(1);
 		
 		paper = PDDocument.load(fileLocation);
 		info = 	paper.getDocumentInformation();
-
+		
 		String titleWithWhiteSpaces = strip.getText(paper);
-		StringBuilder title = null;
+		StringBuilder title = new StringBuilder() ;
 		StringTokenizer tk =new StringTokenizer(titleWithWhiteSpaces);
 		while(tk.hasMoreTokens() ){
 			   
 			title.append(tk.nextToken() + " ");
 			   }
 		
-		if (title.toString().isEmpty() || title.toString() == null)
-			title.append(info.getTitle());
+		if (title.toString().isEmpty() || title.toString() == null  )
+		{
+			title.append(info.getTitle());}
 		
 		
-		
+		paper.close();
 		
 		return title.toString();
 		
