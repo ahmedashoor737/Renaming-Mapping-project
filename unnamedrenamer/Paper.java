@@ -102,6 +102,7 @@ public class Paper {
 			String theCounter = String.format("%04d",BibCase.lengthOfExistingPapers()); 
 			String creationYear = getCreationDate();
 			String theGenerateFileName = String.format("%s     %s %s %s.pdf",theCounter,creationYear,title,year);
+			theGenerateFileName = theGenerateFileName.replaceAll("[^() a-zA-Z0-9.-]", "_");
 			fileName = theGenerateFileName;
 			return theGenerateFileName;
 	}

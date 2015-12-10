@@ -50,6 +50,11 @@ public class PaperFileRenamer {
 		renamedPapers.addAll(handleOverlookedFiles());
 		Settings.addIgnoredFiles(overlookedFiles);
 
+		System.out.println("Ignored files:"); //
+		for (String ignoredFile : Settings.getIgnoredFiles()) {
+			System.out.println(" " + ignoredFile);
+		}
+
 		return renamedPapers;
 	}
 
@@ -62,7 +67,20 @@ public class PaperFileRenamer {
 	public Paper renameFile(String fileName) {
 		//is PDFReader static or provide static convenience methods?
 		//simplest way to pass fileName to PDFReader
-		String title = "2D and 3D Visualization of AspectJ Programs"; //PDFReader.findTitle(fileName);
+		System.out.println(fileName); //
+		String title;
+		try {
+			title = PDFReader.findTitle(new File(papersFolder, fileName));
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+			return null;
+		}
+		if (title.length() > 300) { //
+			System.out.println(" title: too long");
+		} else {
+			System.out.println(" title: " + title);
+		}
+
 		BibItem bibItem;	
 		try {
 			bibItem = finder.findByTitle(title);
@@ -75,7 +93,11 @@ public class PaperFileRenamer {
 		} catch (URISyntaxException urie) {
 			urie.printStackTrace();
 			return null;
+		} catch (IllegalStateException ise) {
+			ise.printStackTrace();
+			return null;
 		}
+		System.out.println(bibItem); //
 
 		Paper paper;
 		paper = BibCase.removeFromReferences(bibItem);
@@ -85,14 +107,18 @@ public class PaperFileRenamer {
 			paper = new Paper(bibItem, fileName);
 		}
 
+		String newFileName;
 		try {
-			String newFileName = paper.generateFileName();
+			newFileName = paper.generateFileName();
 			renameTo(fileName, newFileName);
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 			return null;
 		}
+		System.out.println(" new name: " + newFileName); //
 
+		//hack
+		BibCase.numberOfRenamedPapers++;
 		return paper;
 	}
 

@@ -60,7 +60,7 @@ public class BibTexFinder {
 	 * @param title of paper
 	 * @return BibItem containing the found entry, null if not found.
 	 */
-	public BibItem findBibItemByTitle(String title) throws MalformedURLException, IOException, URISyntaxException, ParseException {
+	public BibItem findBibItemByTitle(String title) throws MalformedURLException, IOException, URISyntaxException, ParseException, IllegalStateException {
 		BibTeXEntry entry = findInFile(title);
 
 		if (title.length() > maximumQueryLength) {
@@ -97,7 +97,7 @@ public class BibTexFinder {
 	 * @param citation with paper information
 	 * @return BibItem containing the found entry, null if not found.
 	 */
-	public BibItem findBibItemByCitation(String citation) throws MalformedURLException, IOException, URISyntaxException, ParseException {
+	public BibItem findBibItemByCitation(String citation) throws MalformedURLException, IOException, URISyntaxException, ParseException, IllegalStateException {
 		if (citation.length() > maximumQueryLength) {
 			throw new IOException("Query is too long");
 		}
@@ -143,7 +143,7 @@ public class BibTexFinder {
 	 * @param query to search with
 	 * @return a string containing the entry as found on CrossRef, empty string if not found
 	 */
-	private String findOnCrossRef(String query) throws URISyntaxException, MalformedURLException, IOException {
+	private String findOnCrossRef(String query) throws URISyntaxException, MalformedURLException, IOException, IllegalStateException {
 		String doi = getDOI(query);
 		return getBibEntry(doi);
 	}
@@ -154,7 +154,7 @@ public class BibTexFinder {
 	 * @param title paper title
 	 * @return DOI
 	 */
-	private String getDOI(String query) throws URISyntaxException, MalformedURLException, IOException {
+	private String getDOI(String query) throws URISyntaxException, MalformedURLException, IOException, IllegalStateException {
 		URL url = getCrossrefURL("/works", "rows=1&query=" + query);
 		JsonObject crossrefJson = getJSON(url);
 

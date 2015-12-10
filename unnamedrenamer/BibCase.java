@@ -16,23 +16,28 @@ public class BibCase {
 	//packages
 
 	//existing papers are papers with a pdf file
+	public static int numberOfRenamedPapers = 0;
 	private static Set<Paper> existingPapers = new LinkedHashSet<Paper>();
 	//referenced non existing papers are papers that were references but have no pdf file
 	private static Set<Paper> referencedNonExistingPapers = new LinkedHashSet<Paper>();
 	//using hash set for more efficent remove(Paper) method?
 	
 	public static void main(String[] args) {
-		initialize();
+		configure();
 		
-		//monitorFolder(Settings.getFolderPath());
+		initialize();
+
+		try {
+			WatchDir.monitorFolder(Settings.getFolderPath());
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+			//do something
+		}
 
 		//gui > Settings > Notes > Visualization
-		//keep monitering folder (add->rename-visualize, remove->handle)
 	}
 
 	public static void initialize() {
-		configure();
-
 		try {
 			BibTexFinder finder = new BibTexFinder(Settings.getBibFilePath());
 			PaperFileRenamer renamer = new PaperFileRenamer(Settings.getFolderPath(), finder);
@@ -62,7 +67,11 @@ public class BibCase {
 	/**
 	 * Add/remove/find paper methods
 	 */
-	public static Paper findPaperinExistingPaper(BibItem bibItem) {
+	public static void addToExistingPapers(Paper newPaper) {
+		existingPapers.add(newPaper);
+	}
+
+	public static Paper findPaperinExistingPapers(BibItem bibItem) {
 		return searchCollectionByBibItem(existingPapers, bibItem);
 	}
 
@@ -101,6 +110,7 @@ public class BibCase {
 	}
 
 	public static int lengthOfExistingPapers() {
-		return existingPapers.size();
+		//return existingPapers.size();
+		return numberOfRenamedPapers;
 	}
 }

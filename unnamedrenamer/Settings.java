@@ -78,6 +78,12 @@ public class Settings
 	{
 		ignoredFiles.addAll(newIgnoredFiles);
 	}
+
+	public static void addIgnoredFile(String newIgnoredFile) {
+		LinkedList<String> dummyList = new LinkedList<String>();
+		dummyList.add(newIgnoredFile);
+		ignoredFiles.addAll(dummyList);
+	}
 	
 	public static boolean removeIgnoredFile(String ignoredFile )  
 	{
