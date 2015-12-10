@@ -1,5 +1,6 @@
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.io.File;
 import java.io.IOException;
@@ -71,7 +72,6 @@ public class PDFReader extends PDFTextStripper
 		paper = PDDocument.load(fileLocation);
 		info = 	paper.getDocumentInformation();
 		return attr.creationTime().toString().substring(0, attr.creationTime().toString().indexOf('T')); //this return creation time
-		//return info.getCreationDate().getTime().toString().substring(0, 10); this is provided by pdfbox api(different format)
 	}
 
 
@@ -79,21 +79,7 @@ public class PDFReader extends PDFTextStripper
 
     String findmax(LinkedList<Position> lPositions )
     {
-    	//max = first
-    	//distance between title lines = 0
-    	//list of title lines = [max,]
-
-    	//loop over list, [current]
-    	  //if empty, continue
-    	  //if current > max, max = current
-    	    //list of title lines = [max,]
-    	    //distance between title lines = 0
-    	  //if current = max
-    	    //if distance between title lines = 0, distance between title lines = |current->max| and add current to title lines
-    	    //if distance between title lines != 0
-    	      //if distance between title lines = |current->max|, add current to title lines
-    	      //else, stop accepting title lines
-    	  //if current < max, ignore
+    	
     	Position max = lPositions.element();
     	for (Position lposition : lPositions)
     	{
@@ -173,6 +159,33 @@ public class PDFReader extends PDFTextStripper
 
 	}
 
+	static List<String> findReferences(File fileLocation) throws IOException
+	{
+		PDFTextStripper strip = new PDFTextStripper();
+		PDDocument paper = PDDocument.load(new File(fileLocation));
+
+		for(int i = paper.getNumberOfPages();i!=0;i--)
+		{
+			strip.setStartPage(i);
+			strip.setEndPage(i);
+			if (strip.getText(paper).toLowerCase().contains("references"))
+				break;
+
+		}
+		String refPage = strip.getText(paper).toLowerCase();
+		String references = refPage.substring(refPage.indexOf("references")+10);
+		System.out.println(references);
+		Scanner sc = new Scanner(references);
+		LinkedList<String> lRef = new LinkedList<String>() ;
+		int i =0;
+		while(sc.hasNextLine())
+		{
+				lRef.add(sc.nextLine());
+				System.out.println(lRef.get(i));
+				i++;
+		}
+		return lRef;
+	}
 
 
 }
