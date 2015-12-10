@@ -174,14 +174,12 @@ public class PDFReader extends PDFTextStripper
 		}
 		String refPage = strip.getText(paper).toLowerCase();
 		String references = refPage.substring(refPage.indexOf("references")+10);
-		System.out.println(references);
 		Scanner sc = new Scanner(references);
 		LinkedList<String> lRef = new LinkedList<String>() ;
 		int i =0;
 		while(sc.hasNextLine())
 		{
 				lRef.add(sc.nextLine());
-				System.out.println(lRef.get(i));
 				i++;
 		}
 		return lRef;
