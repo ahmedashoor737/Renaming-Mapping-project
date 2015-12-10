@@ -50,10 +50,10 @@ public class PaperFileRenamer {
 		renamedPapers.addAll(handleOverlookedFiles());
 		Settings.addIgnoredFiles(overlookedFiles);
 
-		System.out.println("Ignored files:"); //
-		for (String ignoredFile : Settings.getIgnoredFiles()) {
-			System.out.println(" " + ignoredFile);
-		}
+		//System.out.println("Ignored files:"); //
+		//for (String ignoredFile : Settings.getIgnoredFiles()) {
+			//System.out.println(" " + ignoredFile);
+		//}
 
 		return renamedPapers;
 	}
@@ -67,10 +67,10 @@ public class PaperFileRenamer {
 	public Paper renameFile(String fileName) {
 		//is PDFReader static or provide static convenience methods?
 		//simplest way to pass fileName to PDFReader
-		System.out.println(fileName); //
+		//System.out.println(fileName); //
 
 		if (Settings.isIgnoredFile(fileName)) {
-			System.out.println(" file ignored");
+			//System.out.println(" file ignored");
 			return null;
 		}
 
@@ -82,9 +82,9 @@ public class PaperFileRenamer {
 			return null;
 		}
 		if (title.length() > 300) { //
-			System.out.println(" title: too long");
+			//System.out.println(" title: too long");
 		} else {
-			System.out.println(" title: " + title);
+			//System.out.println(" title: " + title);
 		}
 
 		BibItem bibItem;	
@@ -103,7 +103,7 @@ public class PaperFileRenamer {
 			ise.printStackTrace();
 			return null;
 		}
-		System.out.println(bibItem); //
+		//System.out.println(bibItem); //
 
 		Paper paper;
 		paper = BibCase.removeFromReferences(bibItem);
@@ -121,7 +121,7 @@ public class PaperFileRenamer {
 			ioe.printStackTrace();
 			return null;
 		}
-		System.out.println(" new name: " + newFileName); //
+		//System.out.println(" new name: " + newFileName); //
 
 		//hack
 		BibCase.numberOfRenamedPapers++;

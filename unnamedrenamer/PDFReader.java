@@ -162,7 +162,7 @@ public class PDFReader extends PDFTextStripper
 	static List<String> findReferences(File fileLocation) throws IOException
 	{
 		PDFTextStripper strip = new PDFTextStripper();
-		PDDocument paper = PDDocument.load(new File(fileLocation));
+		PDDocument paper = PDDocument.load(fileLocation);
 
 		for(int i = paper.getNumberOfPages();i!=0;i--)
 		{

@@ -4,6 +4,9 @@ import java.util.LinkedHashSet;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.IOException;
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.jbibtex.*;
 
 /**
@@ -24,6 +27,8 @@ public class BibCase {
 	
 	public static void main(String[] args) {
 		configure();
+
+		new BibCaseGUI();
 		
 		initialize();
 
@@ -58,8 +63,32 @@ public class BibCase {
 	}
 
 	public static void configure() {
-		Settings.setBibFilePath(Paths.get("samples", "mybib.bib"));
-		Settings.setFolderPath(Paths.get("samples"));
+		File workingDirectory = new File(System.getProperty("user.dir"));
+		
+		JFileChooser folderChooser = new JFileChooser();
+		folderChooser.setCurrentDirectory(workingDirectory);
+		folderChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		int folderValue = folderChooser.showOpenDialog(null);
+		if (folderValue == JFileChooser.APPROVE_OPTION) {
+			File folder = folderChooser.getSelectedFile();
+			Settings.setFolderPath(folder.toPath());
+		} else {
+			//fallback
+		}
+
+
+		JFileChooser bibChooser = new JFileChooser();
+		bibChooser.setCurrentDirectory(workingDirectory);
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("BibTeX database", "bib");
+		bibChooser.setFileFilter(filter);
+		int fileValue = bibChooser.showOpenDialog(null);
+		if (fileValue == JFileChooser.APPROVE_OPTION) {
+    		File bibFile = bibChooser.getSelectedFile();
+			Settings.setBibFilePath(bibFile.toPath());
+		}
+
+		//Settings.setBibFilePath(Paths.get("samples", "mybib.bib"));
+		//Settings.setFolderPath(Paths.get("samples"));
 		//load settings
 		//choose folder and .bib file
 	}
