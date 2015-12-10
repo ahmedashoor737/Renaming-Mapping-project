@@ -84,6 +84,10 @@ public class Settings
 		dummyList.add(newIgnoredFile);
 		ignoredFiles.addAll(dummyList);
 	}
+
+	public static boolean isIgnoredFile(String fileName) {
+		return ignoredFiles.contains(fileName);
+	}
 	
 	public static boolean removeIgnoredFile(String ignoredFile )  
 	{

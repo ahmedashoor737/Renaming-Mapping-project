@@ -68,6 +68,12 @@ public class PaperFileRenamer {
 		//is PDFReader static or provide static convenience methods?
 		//simplest way to pass fileName to PDFReader
 		System.out.println(fileName); //
+
+		if (Settings.isIgnoredFile(fileName)) {
+			System.out.println(" file ignored");
+			return null;
+		}
+
 		String title;
 		try {
 			title = PDFReader.findTitle(new File(papersFolder, fileName));
@@ -119,6 +125,7 @@ public class PaperFileRenamer {
 
 		//hack
 		BibCase.numberOfRenamedPapers++;
+		Settings.addIgnoredFile(newFileName);
 		return paper;
 	}
 

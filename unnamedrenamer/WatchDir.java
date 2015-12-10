@@ -58,7 +58,7 @@ public class WatchDir {
      * Register the given directory with the WatchService
      */
     private void register(Path dir) throws IOException {
-        WatchKey key = dir.register(watcher, ENTRY_CREATE); //, ENTRY_DELETE, ENTRY_MODIFY);
+        WatchKey key = dir.register(watcher, ENTRY_CREATE);// ENTRY_DELETE, ENTRY_MODIFY);
         if (trace) {
             Path prev = keys.get(key);
             if (prev == null) {
@@ -120,15 +120,15 @@ public class WatchDir {
 
                 // rename new file
                 if (event.kind() == ENTRY_CREATE) {
+                    //System.out.println(" renamed");
                     Paper newPaper = PaperFileRenamer.renameSingleFile(name.toString());
                     if (newPaper != null) {
                         BibCase.addToExistingPapers(newPaper);
-                        BibCase.numberOfRenamedPapers++; //lazy hack
-                    } else {
-                        Settings.addIgnoredFile(name.toString());
+                        //BibCase.numberOfRenamedPapers++; //lazy hack
                     }
+                    //Settings.addIgnoredFile(name.toString());
                 }
-                //System.out.format("%s: %s\n", event.kind().name(), child);
+                //System.out.format("%s, %s %s: %s\n", key, event, event.kind().name(), name);
             }
 
             // reset key and remove from set if directory no longer accessible
